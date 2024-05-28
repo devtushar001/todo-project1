@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <style>
+    body {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 500px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 1px;
+      box-shadow: inset 3px 3px 10px rgba(236, 236, 236, 0.297),
+                        3px 3px 10px rgba(0, 0, 0, 0.3),
+                        5px 6px 20px rgba(0, 0, 0, 0.3),
+                  inset -3px -3px 10px rgba(239, 239, 239, 0.3);
+    }
+
+    .container h2 {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      color: rgb(21, 189, 133);
+    }
+
+    .input-box {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .input-box .input-item {
+      flex: 1;
+      border: none;
+      outline: none;
+      background-color: rgb(221, 221, 221);
+      padding: 7px 15px;
+      width: 0;
+      color: rgb(85, 85, 85);
+    }
+
+    .input-box .btn {
+      padding: 7px 30px;
+      background-color: #1665ba;
+      color: #fff;
+      border-radius: 1px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      margin: 15px 0;
+    }
+
+    .todo-item .text-node {
+      padding: 5px 15px;
+      cursor: pointer;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      color: rgb(0, 172, 192);
+      flex: 1;
+    }
+
+    .todo-item .btn {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      padding: 7px 22px;
+      background-color: #a10000;
+      color: #fff;
+      border-radius: 1px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    .text-style {
+      padding: 5px 15px;
+      cursor: pointer;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      color: rgb(0, 38, 45);
+      flex: 1;
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>To-do List</h2>
+    <div style="font-family: Arial; color: #a10000; font-size: 15px; text-align: center; margin-bottom: 30px;" id="error"></div>
+    <div class="input-box">
+      <input type="text" class="input-item" id="todo-input" placeholder="Add new item">
+      <button class="btn" onclick="addItem();">Add</button>
+    </div>
+    <div id="todo-list"></div>
+  </div>
+  <script>
+    function addItem() {
+      let inputValue = document.getElementById('todo-input').value;
+
+      if(inputValue === '') {
+        document.getElementById('error').innerText = `"Please enter a to-do item"`;
+        return;
+      }
+
+      document.getElementById('error').innerText = null;
+
+      let listItem = document.createElement("div");
+      listItem.className = "todo-item";
+
+      let todoText = document.createElement("div");
+      todoText.className = "text-node";
+      todoText.onclick = function() {
+        if(todoText.className === 'text-node') {
+          todoText.classList = "text-style";
+        } else {
+          todoText.className = "text-node";
+        }
+      }
+
+      let textNode = document.createTextNode(inputValue);
+      todoText.appendChild(textNode);
+
+      let deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.classList = "btn delete-btn";
+      deleteButton.onclick = function() {
+        listItem.remove();
+      };
+
+      listItem.appendChild(todoText);
+      listItem.appendChild(deleteButton);
+
+      document.getElementById("todo-list").appendChild(listItem);
+      document.getElementById("todo-input").value = '';
+    }
+    
+    document.addEventListener("keydown", e => {
+      if(e.key === "Enter") {
+        addItem();
+        return;
+      }
+    });
+  </script>
+</body>
+</html>
